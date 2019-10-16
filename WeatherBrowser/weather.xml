@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?php
+$dom=new DOMDocument('1.0','utf-8');
+//获取输入框中城市信息
+$city=isset($_POST['city'])?$_POST['city']:"sichuan";
+//获取城市天气的xml文件
+$dom->load('http://flash.weather.com.cn/wmaps/xml/'.$city.'.xml');
+//获取根节点及最外层标签acity
+$rootElement=$dom->documentElement;
+//获取acity的子节点acity 下的城市city
+$citys=$rootElement->childNodes;
+//子节点数量
+$num=$citys->length;
+for($i=0;$i<$num;$i++){
+    //获取一个节点及具体一个city
+    $cityWeather=$citys->item($i);
+    //判断是否为节点元素
+    if($cityWeather->nodeType==XML_ELEMENT_NODE) {
+        //获取节点属性 不是节点元素注意
+        $row[$i][] = $cityWeather->getAttribute('cityname');
+        $row[$i][] = $cityWeather->getAttribute('stateDetailed');
+        $row[$i][] = $cityWeather->getAttribute('tem1');
+        $row[$i][] = $cityWeather->getAttribute('tem2');
+        $row[$i][] = $cityWeather->getAttribute('temNow');
+        $row[$i][] = $cityWeather->getAttribute('humidity');
+        $row[$i][] = $cityWeather->getAttribute('windState');
+        $row[$i][] = $cityWeather->getAttribute('windDir');
+    }
+}
+?>
+
+
+<form action="01.php" method="post">
+城市：<input type="text" value="城市字母" name="city"></input>
+    <input type="submit" value="提交"></input>
+</form>
+<table border="1" style="text-align: center;margin:0;border-collapse: collapse" >
+    <tr style="margin: 0">
+        <td width="100">城市</td>
+        <td width="100">天气</td>
+        <td width="100">最低温度</td>
+        <td width="100">最高温度</td>
+        <td width="100">实时温度</td>
+        <td width="100">湿度</td>
+        <td width="100">风力</td>
+        <td width="100">风向</td>
+    </tr>
+    <?php foreach($row as $val):?>
+        <tr style="margin: 0">
+            <td><?php echo $val["0"]?></td>
+            <td><?php echo $val["1"]?></td>
+            <td><?php echo $val["2"]?></td>
+            <td><?php echo $val["3"]?></td>
+            <td><?php echo $val["4"]?></td>
+            <td><?php echo $val["5"]?></td>
+            <td><?php echo $val["6"]?></td>
+            <td><?php echo $val["7"]?></td>
+        </tr>
+    <?php endforeach;?>
+</table>
