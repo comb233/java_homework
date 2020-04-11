@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+D:\学习有关\大三下\设计模式\workspace\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+654326053.index
+2982705913.index
+1882181420.index
+162765395.index
+1528169447.index
+3710248468.index
